@@ -1,0 +1,132 @@
+# what's feeding the case 0000000000000000
+# flt_out_M =     0 = 0.000000 * 2** 0 flt_out_dummy = x  x xxxxxxxxxx
+# flt_out_M = 0_00000_000000000000, flt_out_you = x_xxxxx_xxxxxxxxxx
+# scores: you vs. me =           0, you vs. math           0, out of           0
+#  
+# what's feeding the case 0000000000000001
+# flt_out_M =     1 = 1.000000 * 2**15 flt_out0=0 15 0000000000
+# flt_out_M = 0_01111_0000000000, flt_out = 0_01111_0000000000
+#     1 = 1.000000 * 2**         0 flt_out=0          0 1.0000000000
+# flt_out0=0_01111_0000000000, flt_out = 0_01111_0000000000
+# scores: you vs. me =           1, you vs. math           1, out of           1
+#  
+# what's feeding the case 0000000000000010
+# flt_out_M =     2 = 1.000000 * 2**16 flt_out0=0 16 0000000000
+# flt_out_M = 0_10000_0000000000, flt_out = 0_10000_0000000000
+#     2 = 1.000000 * 2**         1 flt_out=0          1 1.0000000000
+# flt_out0=0_10000_0000000000, flt_out = 0_10000_0000000000
+# scores: you vs. me =           2, you vs. math           2, out of           2
+#  
+# what's feeding the case 0000000000000011
+# flt_out_M =     3 = 1.500000 * 2**16 flt_out0=0 16 1000000000
+# flt_out_M = 0_10000_1000000000, flt_out = 0_10000_1000000000
+#     3 = 1.500000 * 2**         1 flt_out=0          1 1.1000000000
+# flt_out0=0_10000_1000000000, flt_out = 0_10000_1000000000
+# scores: you vs. me =           3, you vs. math           3, out of           3
+#  
+# what's feeding the case 0000000000001100
+# flt_out_M =    12 = 1.500000 * 2**18 flt_out0=0 18 1000000000
+# flt_out_M = 0_10010_1000000000, flt_out = 0_10010_1000000000
+#    12 = 1.500000 * 2**         3 flt_out=0          3 1.1000000000
+# flt_out0=0_10010_1000000000, flt_out = 0_10010_1000000000
+# scores: you vs. me =           4, you vs. math           4, out of           4
+#  
+# what's feeding the case 0000000000110000
+# flt_out_M =    48 = 1.500000 * 2**20 flt_out0=0 20 1000000000
+# flt_out_M = 0_10100_1000000000, flt_out = 0_10100_1000000000
+#    48 = 1.500000 * 2**         5 flt_out=0          5 1.1000000000
+# flt_out0=0_10100_1000000000, flt_out = 0_10100_1000000000
+# scores: you vs. me =           5, you vs. math           5, out of           5
+#  
+# what's feeding the case 0100111100000000
+# flt_out_M = 20224 = 1.234375 * 2**29 flt_out0=0 29 0011110000
+# flt_out_M = 0_11101_0011110000, flt_out = 0_11101_0011110000
+# 20224 = 1.234375 * 2**        14 flt_out=0         14 1.0011110000
+# flt_out0=0_11101_0011110000, flt_out = 0_11101_0011110000
+# scores: you vs. me =           6, you vs. math           6, out of           6
+#  
+# what's feeding the case 1000111100000000
+# flt_out_M = 28928 = 1.765625 * 2**29 flt_out0=1 29 1100010000
+# flt_out_M = 1_11101_1100010000, flt_out = 1_11101_1100010000
+# 28928 = 1.765625 * 2**        14 flt_out=1         14 1.1100010000
+# flt_out0=1_11101_1100010000, flt_out = 1_11101_1100010000
+# scores: you vs. me =           7, you vs. math           7, out of           7
+#  
+# what's feeding the case 0111111100000000
+# flt_out_M = 32512 = 1.984375 * 2**29 flt_out0=0 29 1111110000
+# flt_out_M = 0_11101_1111110000, flt_out = 0_11101_1111110000
+# 32512 = 1.984375 * 2**        14 flt_out=0         14 1.1111110000
+# flt_out0=0_11101_1111110000, flt_out = 0_11101_1111110000
+# scores: you vs. me =           8, you vs. math           8, out of           8
+#  
+# what's feeding the case 0011000010000000
+# flt_out_M = 12416 = 1.515625 * 2**28 flt_out0=0 28 1000010000
+# flt_out_M = 0_11100_1000010000, flt_out = 0_11100_1000010000
+# 12416 = 1.515625 * 2**        13 flt_out=0         13 1.1000010000
+# flt_out0=0_11100_1000010000, flt_out = 0_11100_1000010000
+# scores: you vs. me =           9, you vs. math           9, out of           9
+#  
+# what's feeding the case 1000100000000000
+# flt_out_M = 30720 = 1.875000 * 2**29 flt_out0=1 29 1110000000
+# flt_out_M = 1_11101_1110000000, flt_out = 1_11101_1110000000
+# 30720 = 1.875000 * 2**        14 flt_out=1         14 1.1110000000
+# flt_out0=1_11101_1110000000, flt_out = 1_11101_1110000000
+# scores: you vs. me =          10, you vs. math          10, out of          10
+#  
+# what's feeding the case 1000001000000000
+# flt_out_M = 32256 = 1.968750 * 2**29 flt_out0=1 29 1111100000
+# flt_out_M = 1_11101_1111100000, flt_out = 1_11101_1111100000
+# 32256 = 1.968750 * 2**        14 flt_out=1         14 1.1111100000
+# flt_out0=1_11101_1111100000, flt_out = 1_11101_1111100000
+# scores: you vs. me =          11, you vs. math          11, out of          11
+#  
+# what's feeding the case 0000000001010101
+# flt_out_M =    85 = 1.328125 * 2**21 flt_out0=0 21 0101010000
+# flt_out_M = 0_10101_0101010000, flt_out = 0_10101_0101010000
+#    85 = 1.328125 * 2**         6 flt_out=0          6 1.0101010000
+# flt_out0=0_10101_0101010000, flt_out = 0_10101_0101010000
+# scores: you vs. me =          12, you vs. math          12, out of          12
+#  
+# what's feeding the case 0000010101010000
+# flt_out_M =  1360 = 1.328125 * 2**25 flt_out0=0 25 0101010000
+# flt_out_M = 0_11001_0101010000, flt_out = 0_11001_0101010000
+#  1360 = 1.328125 * 2**        10 flt_out=0         10 1.0101010000
+# flt_out0=0_11001_0101010000, flt_out = 0_11001_0101010000
+# scores: you vs. me =          13, you vs. math          13, out of          13
+#  
+# what's feeding the case 0100000010000000
+# flt_out_M = 16512 = 1.007813 * 2**29 flt_out0=0 29 0000001000
+# flt_out_M = 0_11101_0000001000, flt_out = 0_11101_0000001000
+# 16512 = 1.007813 * 2**        14 flt_out=0         14 1.0000001000
+# flt_out0=0_11101_0000001000, flt_out = 0_11101_0000001000
+# scores: you vs. me =          14, you vs. math          14, out of          14
+#  
+# what's feeding the case 0000001000101100
+# flt_out_M =   556 = 1.085938 * 2**24 flt_out0=0 24 0001011000
+# flt_out_M = 0_11000_0001011000, flt_out = 0_11000_0001011000
+#   556 = 1.085938 * 2**         9 flt_out=0          9 1.0001011000
+# flt_out0=0_11000_0001011000, flt_out = 0_11000_0001011000
+# scores: you vs. me =          15, you vs. math          15, out of          15
+#  
+# what's feeding the case 1000000000100000
+# flt_out_M = 32736 = 1.998047 * 2**29 flt_out0=1 29 1111111110
+# flt_out_M = 1_11101_1111111110, flt_out = 1_11101_1111111110
+# 32736 = 1.998047 * 2**        14 flt_out=1         14 1.1111111110
+# flt_out0=1_11101_1111111110, flt_out = 1_11101_1111111110
+# scores: you vs. me =          16, you vs. math          16, out of          16
+#  
+# what's feeding the case 0111111111110000
+# flt_out_M = 32752 = 1.999023 * 2**29 flt_out0=0 29 1111111111
+# flt_out_M = 0_11101_1111111111, flt_out = 0_11101_1111111111
+# 32752 = 1.999023 * 2**        14 flt_out=0         14 1.1111111111
+# flt_out0=0_11101_1111111111, flt_out = 0_11101_1111111111
+# scores: you vs. me =          17, you vs. math          17, out of          17
+#  
+# what's feeding the case 1111111111000000
+# flt_out_M =    64 = 1.000000 * 2**21 flt_out0=1 21 0000000000
+# flt_out_M = 1_10101_0000000000, flt_out = 1_10101_0000000000
+#    64 = 1.000000 * 2**         6 flt_out=1          6 1.0000000000
+# flt_out0=1_10101_0000000000, flt_out = 1_10101_0000000000
+# scores: you vs. me =          18, you vs. math          18, out of          18
+#  
+# scores =          18          18 out of          18
