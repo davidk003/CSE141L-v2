@@ -1,5 +1,6 @@
-#include "util.h"
+#include <stdint.h>
 #include <assert.h>
+#include <stdio.h>
 
 void printBinary8(uint8_t num) {
     for (int i = 7; i >= 0; i--) {

@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <stdint.h>
 #include "../lib/util.h"
-#include "program.c"
+
+uint16_t int2float(uint8_t upper, uint8_t lower);
 
 int main() {
     // Test cases based on the file
@@ -33,8 +34,8 @@ int main() {
         0b0000000000000000, 0b0011110000000000, 0b0100000000000000, 0b0100001000000000,
         0b0100101000000000, 0b0101001000000000, 0b0111010011110000, 0b1111011100010000,
         0b0111011111110000, 0b0111001000010000, 0b1111011110000000, 0b1111011111100000,
-        0b0101010101010000, 0b0110010101010000, 0b0111010000001000, 0b0110000001011000, 0b1111011111111110,
-        0b0111011111111111, 0b1101010000000000
+        0b0101010101010000, 0b0110010101010000, 0b0111010000001000, 0b0110000001011000,
+        0b1111011111111110, 0b0111011111111111, 0b1101010000000000
     };
 
     test16 testCases[testCount];
@@ -45,12 +46,21 @@ int main() {
         uint8_t lower = testInputs[i] & 0xFF;
         testCases[i].test = int2float(upper, lower);
         testCases[i].truth = testOutputs[i];
-    }
 
+        printf("Test case %d: ", i);
+        if(testCases[i].test == testCases[i].truth)
+        {
+            printf("PASS\n");
+        }
+        else
+        {
+            printf("FAIL\n");
+        }
+        printBinary16(testCases[i].test);
+        printf("\n");
+        printBinary16(testCases[i].truth);
+        printf("\n");
 
-    for(size_t i = 0; i < testCount; i++)
-    {
-        
     }
 
 
