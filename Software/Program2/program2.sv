@@ -57,7 +57,7 @@ always begin
 // limit overflow to max. positive
 	else      {dm1.mem_core[7],dm1.mem_core[6]} = 16'h7fff;
   end
-  else begin 
+  else begin
     if(int_frac[41:40]) int_frac[39:25] = 15'h7fff;
     if(sign)		                  // negative result -- take two's comp.
       {dm1.mem_core[7],dm1.mem_core[6]} = ~int_out + 'b1;
