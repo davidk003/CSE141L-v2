@@ -74,14 +74,15 @@ int main() {
         testCases[i].test = float2int(upper, lower);
         testCases[i].truth = testOutputs[i];
 
-        printf("Test case %d: ", i);
+        printf("Test case %d: Input: ", i+1);
+        printBinary16(testInputs[i]);
         if(testCases[i].test == testCases[i].truth)
         {
-            printf("PASS\n");
+            printf("\tPASS\n");
         }
         else
         {
-            printf("FAIL\n");
+            printf("\tFAIL\n");
         }
         printBinary16(testCases[i].test);
         printf("\n");

@@ -7,13 +7,11 @@ uint16_t concatFixed(uint8_t fixed1, uint8_t fixed2)
 
 uint16_t float2int(uint8_t float1, uint8_t float2)
 {
-    uint8_t MAX_NEG_EXP = 0b01111000;
     uint8_t EXP_MASK = 0b01111100;
     uint8_t MSB_MASK = 0b10000000;
     uint8_t ALL_ONES = 0b11111111;
     uint8_t ZERO = 0b00000000;
-    uint8_t LEADING_ONE = 0b10000000;
-    
+
     uint8_t fixed1 = ZERO;
     uint8_t fixed2 = ZERO;
     uint8_t INF_MASK = 0b11111100;
@@ -68,7 +66,7 @@ uint16_t float2int(uint8_t float1, uint8_t float2)
     // Shift int_frac39 to 0 left by the value of exp.
 
     uint8_t t = EXP >> 3; // Number of full byte shifts (0 to 5)
-    uint8_t s = s & 7;  // Basically get remainder of EXP / 8
+    uint8_t s = EXP & 7;  // Basically get remainder of EXP / 8
 
     // Handle full byte shifts
     if (t == 0) {
