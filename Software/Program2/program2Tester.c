@@ -66,7 +66,7 @@ int main() {
 
 
     test16 testCases[testCount];
-
+    int passed = 0;
     for(size_t i = 0; i < testCount; i++)
     {
         uint8_t upper = (testInputs[i] >> 8) & 0xFF;
@@ -78,6 +78,7 @@ int main() {
         printBinary16(testInputs[i]);
         if(testCases[i].test == testCases[i].truth)
         {
+            passed++;
             printf("\tPASS\n");
         }
         else
@@ -88,6 +89,7 @@ int main() {
         printf("\n");
         printBinary16(testCases[i].truth);
         printf("\n");
+        printf("Passed %d out of %d tests\n", passed, i+1);
 
     }
 

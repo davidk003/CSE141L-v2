@@ -39,17 +39,17 @@ int main() {
     };
 
     test16 testCases[testCount];
-
+    int passed = 0;
     for(size_t i = 0; i < testCount; i++)
     {
         uint8_t upper = (testInputs[i] >> 8) & 0xFF;
         uint8_t lower = testInputs[i] & 0xFF;
         testCases[i].test = int2float(upper, lower);
         testCases[i].truth = testOutputs[i];
-
-        printf("Test case %d: ", i);
+        printf("Test case %d: ", i+1);
         if(testCases[i].test == testCases[i].truth)
         {
+            passed++;
             printf("PASS\n");
         }
         else
@@ -60,7 +60,7 @@ int main() {
         printf("\n");
         printBinary16(testCases[i].truth);
         printf("\n");
-
+        printf("%d tests passed\n", passed);
     }
 
 

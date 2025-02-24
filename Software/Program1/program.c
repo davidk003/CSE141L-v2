@@ -33,9 +33,9 @@ uint16_t int2float(uint8_t fixed1, uint8_t fixed2) {
         // Two’s complement
         float1 = fixed1 ^ ALL_ONE;
         float2 = fixed2 ^ ALL_ONE;
-        float2 = (uint8_t)(float2 + 1);
+        float2 = float2 + 1;
         if (float2 == 0x00) {
-            float1 = (uint8_t)(float1 + 1);
+            float1 = float1 + 1;
         }
     } else {
         float1 = fixed1;
@@ -52,7 +52,7 @@ uint16_t int2float(uint8_t fixed1, uint8_t fixed2) {
     // Initial shift
     uint8_t temp = (float2 & LEADING_ONE_CONST) >> 7;
     float2 <<= 1;
-    float1 = (uint8_t)((float1 << 1) | temp);
+    float1 = ((float1 << 1) | temp);
 
     // Shift until leading one found or 15 shifts
     while (i < 15) {
@@ -61,7 +61,7 @@ uint16_t int2float(uint8_t fixed1, uint8_t fixed2) {
         }
         temp = (float2 & LEADING_ONE_CONST) >> 7;
         float2 <<= 1;
-        float1 = (uint8_t)((float1 << 1) | temp);
+        float1 = ((float1 << 1) | temp);
         i++;
     }
 
@@ -73,26 +73,26 @@ uint16_t int2float(uint8_t fixed1, uint8_t fixed2) {
     // Remove the implicit leading 1 by shifting once more
     temp = (float2 & LEADING_ONE_CONST) >> 7;
     float2 <<= 1;
-    float1 = (uint8_t)((float1 << 1) | temp);
+    float1 = ((float1 << 1) | temp);
 
     // Compute exponent
-    uint8_t exp = (uint8_t)(BIAS_INITIAL_EXP - i);
+    uint8_t exp = BIAS_INITIAL_EXP - i;
 
     // Extract mantissa bits
     uint8_t lower6 = (float1 & 0x3F); // 00111111
     lower6 <<= 2; // shift left by 2
     uint8_t top2 = float2 & 0xC0; // 11000000
-    float2 = (uint8_t)((top2 >> 6) | lower6);
+    float2 = ((top2 >> 6) | lower6);
 
     // Remove mantissa bits from float1
     float1 >>= 6;
 
     // Insert exponent (5 bits) into float1
-    uint8_t exp_shifted = (uint8_t)(exp << 2);
-    float1 = (uint8_t)(float1 | exp_shifted);
+    uint8_t exp_shifted = exp << 2;
+    float1 = float1 | exp_shifted;
 
     // Add sign bit
-    float1 = (uint8_t)(float1 | (sign));
+    float1 = float1 | (sign);
 
     return concatFloat(float1, float2);
 }
