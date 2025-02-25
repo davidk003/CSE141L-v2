@@ -14,30 +14,35 @@ uint16_t float2int(uint8_t float1, uint8_t float2)
 
     uint8_t fixed1 = ZERO;
     uint8_t fixed2 = ZERO;
-    uint8_t INF_MASK = 0b11111100;
+    uint8_t MAX_MASK = 0b11111100;
     // If the exponent indicates overflow (exp[4:1] all 1s):
 
-    uint8_t CHECK_INF = float1 & INF_MASK;
-    uint8_t NEG_INF = 0b11111100;
-    if (CHECK_INF == NEG_INF) // Trigger if exp is 0b01111000 or 0b01111100
+    uint8_t CHECK_MAX = float1 & MAX_MASK;
+    uint8_t MAX_NEG = 0b11111000;
+    if (CHECK_MAX == MAX_NEG) // Trigger if exp is 0b01111000 or 0b01111100
     {
         fixed1 = 0b10000000;
-        fixed2 = ZERO;
+        fixed2 = 0b00000000;
         return concatFixed(fixed1, fixed2);
     }
-    uint8_t INF = 0b01111100;
-    if (CHECK_INF == INF) // Trigger if exp is 0b01111000 or 0b01111100
+    uint8_t MAX_POS = 0b01111000;
+    if (CHECK_MAX == MAX_POS) // Trigger if exp is 0b01111000 or 0b01111100
     {
         fixed1 = 0b01111111;
-        fixed2 = 0b11111111;
+        fixed2 = 0b00000000;
         return concatFixed(fixed1, fixed2);
     }
 
+    uint8_t frac_47_40 = ZERO;
     uint8_t frac_39_32 = ZERO;
     uint8_t frac_31_24 = ZERO;
     uint8_t frac_23_16 = ZERO;
-    uint8_t frac_15_8  = ZERO;
-    uint8_t frac_7_0   = ZERO;
+    uint8_t frac_15_8 = ZERO;
+    uint8_t frac_7_0 = ZERO;
+
+    // lower 14 bits are where bits start before shifting
+    // 28 after 14 are valid, the remaining uppermost 6 bits are invalid.
+    // Bits 39_24 used at end, make sure to shift right once before because its 15 bits([39:25])
     
     // Note that int_frac is 40 bits long, first 29 bits are zeros, the or of all exp bits, then last 10 bits of float
     // I wonder if we can simulate the first 29 bits because its all the same anyway

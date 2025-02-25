@@ -45,7 +45,7 @@ always begin
 // leave room for large and small exponents 
   int_frac = {31'b0,|flt_in[14:10],flt_in[ 9: 0]};
   int_frac = int_frac<<exp;
-  int_out  = int_frac[39:25];    // exp bias = 15; 10 bits of fraction
+      = int_frac[39:25];    // exp bias = 15; 10 bits of fraction
 /*  case({int_frac[25:24],|int_frac[23:0]})	 // round to nearest even
 	3'b011: int_out++;
 	3'b110:	int_out++;
