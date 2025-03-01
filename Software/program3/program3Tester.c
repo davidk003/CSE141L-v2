@@ -53,6 +53,8 @@ int main() {
         0b0110101001000111  // Test case 11
     };
 
+    size_t passed = 0;
+
     test16 testCases[testCount];
 
     for(size_t i = 0; i < testCount; i++)
@@ -65,9 +67,10 @@ int main() {
         testCases[i].test = float2float(upper1, lower1, upper2, lower2);
         testCases[i].truth = testOutputs[i];
 
-        printf("Test case %d: ", i);
+        printf("Test case %ld: ", i+1);
         if(testCases[i].test == testCases[i].truth)
         {
+            passed++;
             printf("PASS\n");
         }
         else
@@ -80,6 +83,7 @@ int main() {
         printf("\n");
 
     }
+    printf("Passed %ld out of %ld tests\n", passed, testCount);
 
     return 0;
 }
