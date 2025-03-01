@@ -1,4 +1,5 @@
 #include <stdint.h>
+#include "../lib/util.h"
 //Program 2: floatToFixed
 uint16_t concatFixed(uint8_t fixed1, uint8_t fixed2)
 {
@@ -46,7 +47,7 @@ uint16_t float2int(uint8_t float1, uint8_t float2)
     
     // Note that int_frac is 40 bits long, first 29 bits are zeros, the or of all exp bits, then last 10 bits of float
     // I wonder if we can simulate the first 29 bits because its all the same anyway
-    // int_frac = {29'b0,|flt_in[14:10],flt_in[ 9: 0]}; in SV
+    // int_frac = {31'b0,|flt_in[14:10],flt_in[ 9: 0]}; in SV
     // uint8_t int_frac_1 = 0b00000000; // Not actually required to implement cause shift is identical for frac 1-3
     // uint8_t int_frac_2 = 0b00000000;
     // uint8_t int_frac_3 = 0b00000000;
@@ -55,6 +56,10 @@ uint16_t float2int(uint8_t float1, uint8_t float2)
     
     // OR reduction of exp, essentially compare with all 0s otherwise its 1.
     // (handled this above in a trap, OR reduction = 1 here)
+
+    // int_frac = {29'b0,|flt_in[14:10],flt_in[ 9: 0]};
+
+
     uint8_t EXP = float1 & EXP_MASK;
     if(EXP != ZERO) //If exp is 0, OR reduction is 0
     {
@@ -62,7 +67,8 @@ uint16_t float2int(uint8_t float1, uint8_t float2)
         frac_15_8 = frac_15_8 | ORREDUCE;
     }
     uint8_t float9_8 = 0b00000011;
-    frac_15_8 = float1 | float9_8;
+    float9_8 = float9_8 & float1;
+    frac_15_8 = frac_15_8 | float9_8;
     frac_7_0 = float2;
     
     EXP = float1 & EXP_MASK;
@@ -72,7 +78,15 @@ uint16_t float2int(uint8_t float1, uint8_t float2)
 
     uint8_t t = EXP >> 3; // Number of full byte shifts (0 to 5)
     uint8_t s = EXP & 7;  // Basically get remainder of EXP / 8
+    
 
+    printBinary8(frac_39_32);
+    printBinary8(frac_31_24);
+    printBinary8(frac_23_16);
+    printf("_");
+    printBinary8(frac_15_8);
+    printBinary8(frac_7_0);
+    printf("\n");
     // Handle full byte shifts
     if (t == 0) {
         // No full byte shift
@@ -138,7 +152,13 @@ uint16_t float2int(uint8_t float1, uint8_t float2)
         // Shift E
         frac_7_0 = frac_7_0 << s;
     }
-
+    printBinary8(frac_39_32);
+    printBinary8(frac_31_24);
+    printBinary8(frac_23_16);
+    printf("_");
+    printBinary8(frac_15_8);
+    printBinary8(frac_7_0);
+    printf("\n");
     uint8_t LAST = 0b00000001;
     uint8_t fixed2MSB = frac_39_32 & LAST;
     fixed1 = frac_39_32 >> 1;
@@ -167,27 +187,3 @@ uint16_t float2int(uint8_t float1, uint8_t float2)
         return concatFixed(fixed1, fixed2);
     }
 }
-
-//   Handle special cases for overflow or underflow:
-//     If the exponent indicates overflow (exp[4:1] all 1s):
-//       If sign bit is set (negative number):
-//         return `0x8000` (largest negative)
-//       Else:
-//         return `0x7FFF` (largest positive)
-
-//  Load the floating-point input:
-//     sign = MSB of input
-//     exp = Extract bits [14:10] from input
-//     int_frac = Concatenate 29 zero bits, the OR of exp bits, and the 10-bit mantissa [9:0] of flt_in NOTE THIS IS 40 BITS (used to be 42 but i cut it down)
-
-//   Adjust integer fraction based on the exponent:
-//     Shift int_frac left by the value of exp.
-
-//   Extract fixed-point value:
-//     output = Extract bits [39:25] from int_frac
-
-    
-//     If the sign bit is set (negative number):
-//       return twos complement of output
-//     Else:
-//       return output
