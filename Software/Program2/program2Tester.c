@@ -67,14 +67,14 @@ int main() {
 
     test16 testCases[testCount];
     size_t passed = 0;
-    for(size_t i = 0; i < 9; i++)
+    for(size_t i = 0; i < testCount; i++)
     {
         uint8_t upper = (testInputs[i] >> 8) & 0xFF;
         uint8_t lower = testInputs[i] & 0xFF;
         testCases[i].test = float2int(upper, lower);
         testCases[i].truth = testOutputs[i];
 
-        printf("Test case %ld: Input: ", i+1);
+        printf("Test case %d: Input: ", i+1);
         printBinary16(testInputs[i]);
         if(testCases[i].test == testCases[i].truth)
         {
@@ -91,7 +91,7 @@ int main() {
         printf("Expected: ");
         printBinary16(testCases[i].truth);
         printf("\n");
-        printf("Passed %ld out of %ld tests\n", passed, i+1);
+        printf("Passed %d out of %d tests\n", passed, i+1);
 
     }
 

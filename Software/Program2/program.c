@@ -1,4 +1,5 @@
 #include <stdint.h>
+#include <stdio.h>
 #include "../lib/util.h"
 //Program 2: floatToFixed
 uint16_t concatFixed(uint8_t fixed1, uint8_t fixed2)
@@ -30,7 +31,7 @@ uint16_t float2int(uint8_t float1, uint8_t float2)
     if (CHECK_MAX == MAX_POS) // Trigger if exp is 0b01111000 or 0b01111100
     {
         fixed1 = 0b01111111;
-        fixed2 = 0b00000000;
+        fixed2 = 0b11111111;
         return concatFixed(fixed1, fixed2);
     }
 
@@ -163,6 +164,9 @@ uint16_t float2int(uint8_t float1, uint8_t float2)
     uint8_t fixed2MSB = frac_39_32 & LAST;
     fixed1 = frac_39_32 >> 1;
     fixed2 = frac_31_24 >> 1;
+    // printBinary8(fixed1);
+    // printBinary8(fixed2);
+    fixed2MSB = fixed2MSB << 7;
     fixed2 = fixed2 | fixed2MSB;
     // If the sign bit is set (negative number):
     uint8_t SIGN = float1 & MSB_MASK;

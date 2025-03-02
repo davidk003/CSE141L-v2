@@ -10,6 +10,7 @@ void printBinary8(uint8_t num) {
 
 void printBinary16(uint16_t num) {
     for (int i = 15; i >= 0; i--) {
+        if(i == 7) printf("_");
         printf("%d", (num >> i) & 1);
     }
 }
