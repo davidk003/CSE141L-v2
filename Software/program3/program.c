@@ -10,7 +10,6 @@ uint16_t concatFixed(uint8_t float1, uint8_t float2)
 // 1 bit sign, 10 bit mantissa, 5 bit exponent
 uint16_t float2float(uint8_t op1_1, uint8_t op1_2, uint8_t op2_1, uint8_t op2_2)
 {
-    
     //Store in LUTs
     const uint8_t SIGN_MASK = 0b10000000;
     const uint8_t EXP_MASK = 0b01111100;
@@ -31,11 +30,11 @@ uint16_t float2float(uint8_t op1_1, uint8_t op1_2, uint8_t op2_1, uint8_t op2_2)
     uint8_t exp1 = op1_1 & EXP_MASK;
     uint8_t exp2 = op2_1 & EXP_MASK;
     uint8_t ZERO_EXP_TRAP = 0b00000000;
-    if(exp1 == ZERO_EXP_TRAP)
+    if(exp1 != ZERO_EXP_TRAP)
     {
         mantissa1_HIGH = mantissa1_HIGH | 0b000000100;
     }
-    if(exp2 == ZERO_EXP_TRAP)
+    if(exp2 != ZERO_EXP_TRAP)
     {
         mantissa2_HIGH = mantissa2_HIGH | 0b000000100;
     }
@@ -44,6 +43,7 @@ uint16_t float2float(uint8_t op1_1, uint8_t op1_2, uint8_t op2_1, uint8_t op2_2)
     uint8_t exp3 = exp1;
     if (exp2 > exp1)
     {
+        printf("Mantissa1: ");
         printBinary8(mantissa1_HIGH);
         printf("_");
         printBinary8(mantissa1_LOW);
@@ -67,6 +67,7 @@ uint16_t float2float(uint8_t op1_1, uint8_t op1_2, uint8_t op2_1, uint8_t op2_2)
             mantissa1_LOW = mantissa1_LOW >> exp_diff;
             mantissa1_LOW = mantissa1_LOW | carry;
         }
+        printf("Mantissa1: ");
         printBinary8(mantissa1_HIGH);
         printf("_");
         printBinary8(mantissa1_LOW);
@@ -74,6 +75,7 @@ uint16_t float2float(uint8_t op1_1, uint8_t op1_2, uint8_t op2_1, uint8_t op2_2)
     }
     else
     {
+        printf("Mantissa2: ");
         printBinary8(mantissa2_HIGH);
         printf("_");
         printBinary8(mantissa2_LOW);
@@ -96,6 +98,7 @@ uint16_t float2float(uint8_t op1_1, uint8_t op1_2, uint8_t op2_1, uint8_t op2_2)
             mantissa2_LOW = mantissa2_LOW >> exp_diff;
             mantissa2_LOW = mantissa2_LOW | carry;
         }
+        printf("Mantissa2: ");
         printBinary8(mantissa2_HIGH);
         printf("_");
         printBinary8(mantissa2_LOW);
@@ -116,21 +119,11 @@ uint16_t float2float(uint8_t op1_1, uint8_t op1_2, uint8_t op2_1, uint8_t op2_2)
     mantissa3_HIGH = carry;
     mantissa3_HIGH = mantissa3_HIGH + mantissa1_HIGH;
     mantissa3_HIGH = mantissa3_HIGH + mantissa2_HIGH;
-    // printf("mantissa1:\n");
-    // printBinary8(mantissa1_HIGH);
-    // printf("_");
-    // printBinary8(mantissa1_LOW);
-    // printf("\n");
-    // printf("mantissa2:\n");
-    // printBinary8(mantissa2_HIGH);
-    // printf("_");
-    // printBinary8(mantissa2_LOW);
-    // printf("\n");
-    // printf("mantissa3:\n");
-    // printBinary8(mantissa3_HIGH);
-    // printf("_");
-    // printBinary8(mantissa3_LOW);
-    // printf("\n");
+    printf("mantissa3: ");
+    printBinary8(mantissa3_HIGH);
+    printf("_");
+    printBinary8(mantissa3_LOW);
+    printf("\n");
 
 
 
@@ -138,7 +131,11 @@ uint16_t float2float(uint8_t op1_1, uint8_t op1_2, uint8_t op2_1, uint8_t op2_2)
     uint8_t CHECK = mantissa3_HIGH & CHECK_MANTISSA_OVERFLOW;
     if(CHECK == CHECK_MANTISSA_OVERFLOW)
     {
+        // printBinary8(exp3);
+        // printf("Overflow detected:");
+        exp3 = exp3 >> 2;
         exp3 = exp3 + 1;
+        exp3 = exp3 << 2;
         uint8_t carry = mantissa3_HIGH & 0b00000001;
         carry = carry << 7;
         mantissa3_HIGH = MANT_MASK_HIGH >> 1;
@@ -152,10 +149,6 @@ uint16_t float2float(uint8_t op1_1, uint8_t op1_2, uint8_t op2_1, uint8_t op2_2)
     fixed1 = fixed1 | mantissa3_HIGH;
     uint8_t fixed2 = mantissa3_LOW;
 
- 
-    printBinary8(mantissa3_HIGH);
-    printBinary8(mantissa3_LOW);
-    printf("\n");
     return concatFixed(fixed1, fixed2);
 
 

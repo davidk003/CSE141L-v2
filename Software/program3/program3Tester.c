@@ -67,7 +67,7 @@ int main() {
         testCases[i].test = float2float(upper1, lower1, upper2, lower2);
         testCases[i].truth = testOutputs[i];
 
-        printf("Test case %d: ", i+1);
+        printf("Test case %ld: ", i+1);
         if(testCases[i].test == testCases[i].truth)
         {
             passed++;
@@ -91,7 +91,7 @@ int main() {
         printf("\n");
 
     }
-    printf("Passed %d out of %d tests\n", passed, testCount);
+    printf("Passed %ld out of %ld tests\n", passed, testCount);
 
     return 0;
 }
