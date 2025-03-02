@@ -1,4 +1,5 @@
 #include <stdint.h>
+#include <stdio.h>
 #include "../lib/util.h"
 
 uint16_t concatFixed(uint8_t float1, uint8_t float2)
@@ -43,6 +44,10 @@ uint16_t float2float(uint8_t op1_1, uint8_t op1_2, uint8_t op2_1, uint8_t op2_2)
     uint8_t exp3 = exp1;
     if (exp2 > exp1)
     {
+        printBinary8(mantissa1_HIGH);
+        printf("_");
+        printBinary8(mantissa1_LOW);
+        printf("\n");
         exp3 = exp2;
         exp_diff = exp2 - exp1;
         sub_shift = exp_diff - 8;
@@ -62,9 +67,17 @@ uint16_t float2float(uint8_t op1_1, uint8_t op1_2, uint8_t op2_1, uint8_t op2_2)
             mantissa1_LOW = mantissa1_LOW >> exp_diff;
             mantissa1_LOW = mantissa1_LOW | carry;
         }
+        printBinary8(mantissa1_HIGH);
+        printf("_");
+        printBinary8(mantissa1_LOW);
+        printf("\n");
     }
     else
     {
+        printBinary8(mantissa2_HIGH);
+        printf("_");
+        printBinary8(mantissa2_LOW);
+        printf("\n");
         exp_diff = exp1 - exp2;
         sub_shift = exp_diff - 8;
         //Mantissa2 shift right by exp_diff
@@ -83,6 +96,10 @@ uint16_t float2float(uint8_t op1_1, uint8_t op1_2, uint8_t op2_1, uint8_t op2_2)
             mantissa2_LOW = mantissa2_LOW >> exp_diff;
             mantissa2_LOW = mantissa2_LOW | carry;
         }
+        printBinary8(mantissa2_HIGH);
+        printf("_");
+        printBinary8(mantissa2_LOW);
+        printf("\n");
     }
 
     // mantissa3 = mantissa1 + mantissa2
@@ -135,8 +152,7 @@ uint16_t float2float(uint8_t op1_1, uint8_t op1_2, uint8_t op2_1, uint8_t op2_2)
     fixed1 = fixed1 | mantissa3_HIGH;
     uint8_t fixed2 = mantissa3_LOW;
 
-    printBinary8(exp3);
-    printf("\t");   
+ 
     printBinary8(mantissa3_HIGH);
     printBinary8(mantissa3_LOW);
     printf("\n");
