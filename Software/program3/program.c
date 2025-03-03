@@ -41,15 +41,14 @@ uint16_t float2float(uint8_t op1_1, uint8_t op1_2, uint8_t op2_1, uint8_t op2_2)
 
     //Default output exp as exp1, if exp2>exp1, set output exp as exp2.
     uint8_t exp3 = exp1;
+
+
     if (exp2 > exp1)
     {
-        printf("Mantissa1: ");
-        printBinary8(mantissa1_HIGH);
-        printf("_");
-        printBinary8(mantissa1_LOW);
-        printf("\n");
+
         exp3 = exp2;
         exp_diff = exp2 - exp1;
+        exp_diff = exp_diff >> 2;
         sub_shift = exp_diff - 8;
         //Mantissa1 shift right by exp_diff
         if (exp_diff >= 8)
@@ -59,28 +58,18 @@ uint16_t float2float(uint8_t op1_1, uint8_t op1_2, uint8_t op2_1, uint8_t op2_2)
         }
         else
         {
-            uint8_t mask = 1 << exp_diff;
-            mask = mask - 1; //Creates a mask of 1s, length exp_diff.
+            uint8_t mask = (1 << exp_diff) - 1; // Creates a mask of 1s, length exp_diff.
             uint8_t carry = mantissa1_HIGH & mask;
-            carry = carry << sub_shift;
+            carry = carry << (8 - exp_diff);    // Shift carry to the upper part of mantissa2_LOW.
             mantissa1_HIGH = mantissa1_HIGH >> exp_diff;
-            mantissa1_LOW = mantissa1_LOW >> exp_diff;
-            mantissa1_LOW = mantissa1_LOW | carry;
+            mantissa1_LOW = (mantissa1_LOW >> exp_diff) | carry;
         }
-        printf("Mantissa1: ");
-        printBinary8(mantissa1_HIGH);
-        printf("_");
-        printBinary8(mantissa1_LOW);
-        printf("\n");
+
     }
     else
     {
-        printf("Mantissa2: ");
-        printBinary8(mantissa2_HIGH);
-        printf("_");
-        printBinary8(mantissa2_LOW);
-        printf("\n");
         exp_diff = exp1 - exp2;
+        exp_diff = exp_diff >> 2;
         sub_shift = exp_diff - 8;
         //Mantissa2 shift right by exp_diff
         if (exp_diff >= 8)
@@ -90,19 +79,13 @@ uint16_t float2float(uint8_t op1_1, uint8_t op1_2, uint8_t op2_1, uint8_t op2_2)
         }
         else
         {
-            uint8_t mask = 1 << exp_diff;
-            mask = mask - 1; //Creates a mask of 1s, length exp_diff.
+            uint8_t mask = (1 << exp_diff) - 1; // Creates a mask of 1s, length exp_diff.
             uint8_t carry = mantissa2_HIGH & mask;
-            carry = carry << sub_shift;
+            carry = carry << (8 - exp_diff);    // Shift carry to the upper part of mantissa2_LOW.
             mantissa2_HIGH = mantissa2_HIGH >> exp_diff;
-            mantissa2_LOW = mantissa2_LOW >> exp_diff;
-            mantissa2_LOW = mantissa2_LOW | carry;
+            mantissa2_LOW = (mantissa2_LOW >> exp_diff) | carry;
         }
-        printf("Mantissa2: ");
-        printBinary8(mantissa2_HIGH);
-        printf("_");
-        printBinary8(mantissa2_LOW);
-        printf("\n");
+
     }
 
     // mantissa3 = mantissa1 + mantissa2
@@ -119,33 +102,35 @@ uint16_t float2float(uint8_t op1_1, uint8_t op1_2, uint8_t op2_1, uint8_t op2_2)
     mantissa3_HIGH = carry;
     mantissa3_HIGH = mantissa3_HIGH + mantissa1_HIGH;
     mantissa3_HIGH = mantissa3_HIGH + mantissa2_HIGH;
-    printf("mantissa3: ");
-    printBinary8(mantissa3_HIGH);
-    printf("_");
-    printBinary8(mantissa3_LOW);
-    printf("\n");
-
 
 
     uint8_t CHECK_MANTISSA_OVERFLOW = 0b00001000; //If 12th bit is occupied then overflow
     uint8_t CHECK = mantissa3_HIGH & CHECK_MANTISSA_OVERFLOW;
     if(CHECK == CHECK_MANTISSA_OVERFLOW)
     {
-        // printBinary8(exp3);
-        // printf("Overflow detected:");
         exp3 = exp3 >> 2;
         exp3 = exp3 + 1;
         exp3 = exp3 << 2;
         uint8_t carry = mantissa3_HIGH & 0b00000001;
         carry = carry << 7;
-        mantissa3_HIGH = MANT_MASK_HIGH >> 1;
+        
+        mantissa3_HIGH = mantissa3_HIGH >> 1;
+
         mantissa3_LOW = mantissa3_LOW >> 1;
+        mantissa3_LOW = mantissa3_LOW | carry;
     }
     
 
-
     uint8_t res_sign = op1_1 & SIGN_MASK; // No sub case so just assign sign
+    exp3 = exp3 & EXP_MASK;
     uint8_t fixed1 = res_sign | exp3;
+    //Mask off 10 bits from mantissa3 MANT_MASK_HIGH=0b00000011
+    mantissa3_HIGH = mantissa3_HIGH & MANT_MASK_HIGH;
+    printf("mantissa3: ");
+    printBinary8(mantissa3_HIGH);
+    printf("_");
+    printBinary8(mantissa3_LOW);
+    printf("\n");
     fixed1 = fixed1 | mantissa3_HIGH;
     uint8_t fixed2 = mantissa3_LOW;
 
@@ -153,43 +138,3 @@ uint16_t float2float(uint8_t op1_1, uint8_t op1_2, uint8_t op2_1, uint8_t op2_2)
 
 
 }
-
-// // Step 2: Initialize result variables
-// sign3 = sign1;  // Assume signs match initially
-// exp3 = exp1;    // Default to addend 1's exponent
-
-// // Step 3: Align exponents by right-shifting the smaller mantissa
-// if (exp1 > exp2) {
-//     exp3 = exp1;
-//     mant2 >>= (exp1 - exp2);
-// } else if (exp2 > exp1) {
-//     exp3 = exp2;
-//     mant1 >>= (exp2 - exp1);
-// }
-
-// // Step 4: Perform addition
-// mant1 = !nil1 ? (mant1 | 0x400) : mant1; // Prepend hidden bit for normalized numbers
-// mant2 = !nil2 ? (mant2 | 0x400) : mant2; // Prepend hidden bit for normalized numbers
-// mant3 = mant1 + mant2;
-
-// // Step 5: Handle overflow (normalization and rounding)
-// if (mant3 & 0x800) {  // Check if most significant bit causes overflow
-//     exp3 += 1;        // Increase exponent
-//     mant3 >>= 1;      // Normalize mantissa by right-shifting
-// }
-
-// // Step 6: Handle rounding-induced overflow
-// if (mant3 & 0x800) {  // Re-check after rounding
-//     exp3 += 1;
-//     mant3 >>= 1;
-// }
-
-// // Step 7: Zero-detection for result
-// nil3 = (exp3 == 0);
-
-// // Step 8: Store result back to memory
-// WriteMemory(132, (sign3 << 7) | (exp3 << 2) | ((mant3 >> 8) & 0x03));
-// WriteMemory(133, mant3 & 0xFF);
-
-// // Indicate completion
-// done = true;
